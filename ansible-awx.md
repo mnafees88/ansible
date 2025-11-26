@@ -225,6 +225,10 @@ Login with:
 ** once done you can access via browser**
 <img width="903" height="205" alt="image" src="https://github.com/user-attachments/assets/ed25ce22-fb1e-40e2-92fa-1e466fb0b196" />
 
+<img width="1005" height="784" alt="image" src="https://github.com/user-attachments/assets/921d8dc3-a28f-492b-8563-88569d2c945b" />
+
+** Add host **
+`1. click on resources >> hosts>> simply name section add IP`
 
 -----------------------------------------------------------------------------------------
 ###Method 2 B. Install via Helm:
