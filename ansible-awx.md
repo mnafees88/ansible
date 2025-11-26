@@ -77,5 +77,81 @@ helm install awx-operator awx-operator/awx-operator -n awx
 ### C. Verify:
 
 ```bash
-kubectl get pods -n aw
+kubectl get pods -n awx
 ```
+
+---
+
+## 6) Deploy AWX Instance (CustomResource)
+
+Create file: **awx-deploy.yaml**
+
+```yaml
+apiVersion: awx.ansible.com/v1beta1
+kind: AWX
+metadata:
+  name: awx-demo
+  namespace: awx
+spec:
+  service_type: nodeport
+  ingress_type: none
+  hostname: awx.local
+  postgres_configuration_secret: ""
+  admin_user: admin
+```
+
+Apply:
+
+```bash
+kubectl apply -f awx-deploy.yaml -n awx
+```
+
+---
+
+## 7) Check Deployment Status
+
+```bash
+kubectl get all -n awx
+kubectl get pods -n awx
+kubectl describe awx awx-demo -n awx
+```
+
+---
+
+## 8) Retrieve Admin Password
+
+```bash
+kubectl get secret awx-demo-admin-password -n awx -o jsonpath="{.data.password}" | base64 --decode ; echo
+```
+
+Default username → **admin**
+
+---
+
+## 9) Access AWX Web UI
+
+Check NodePort:
+
+```bash
+kubectl get svc -n awx
+```
+
+Example:
+
+```
+awx-demo-service   NodePort   31280
+```
+
+Open in browser:
+
+```
+http://<server-ip>:<nodeport>
+```
+
+Login with:
+
+* **Username:** admin
+* **Password:** (retrieved from secret)
+
+---
+
