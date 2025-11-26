@@ -222,13 +222,30 @@ Login with:
 * **Password:** (retrieved from secret)
 
 ---
-** once done you can access via browser**
+**once done you can access via browser**
 <img width="903" height="205" alt="image" src="https://github.com/user-attachments/assets/ed25ce22-fb1e-40e2-92fa-1e466fb0b196" />
 
 <img width="1005" height="784" alt="image" src="https://github.com/user-attachments/assets/921d8dc3-a28f-492b-8563-88569d2c945b" />
 
-** Add host **
+**Add host**
+
 `1. click on resources >> hosts>> simply name section add IP`
+<img width="1181" height="416" alt="image" src="https://github.com/user-attachments/assets/38be91cb-5c97-497f-9c60-578ba1ebffe6" />
+
+**then add server credentials**
+
+`2. click on resources >> credentials>>name your server`
+
+`3. credentials type >>Machine>> adduser name >>add SSH Private key`
+
+<img width="885" height="712" alt="image" src="https://github.com/user-attachments/assets/a462303b-e33e-4252-a16c-049c04bae943" />
+
+
+**Add project to add playbook via git or manual**
+
+`1. click resources>>projects>>add name>>source control if you have git select git>>repourl>>branchname>>`
+<img width="1572" height="535" alt="image" src="https://github.com/user-attachments/assets/f9815014-a587-45a9-84b3-5226e9f4d995" />
+
 
 -----------------------------------------------------------------------------------------
 ###Method 2 B. Install via Helm:
