@@ -154,4 +154,10 @@ Login with:
 * **Password:** (retrieved from secret)
 
 ---
-
+-------------------------
+## case of facing issue use this method for AWX
+````bash
+export NAMESPACE=awx
+kubectl create namespace $NAMESPACE
+make deploy
+````
