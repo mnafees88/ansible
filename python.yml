@@ -1,0 +1,19 @@
+---
+- name: Install Nginx on remote servers
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install python
+      apt:
+        name: python
+        state: present
+
+    - name: Start and enable python service
+      service:
+        name: python
+        state: started
+        enabled: yes
