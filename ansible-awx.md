@@ -222,8 +222,9 @@ Login with:
 * **Password:** (retrieved from secret)
 
 ---
+** once done you can access via browser**
+<img width="903" height="205" alt="image" src="https://github.com/user-attachments/assets/ed25ce22-fb1e-40e2-92fa-1e466fb0b196" />
 
-✔ **Ready for GitHub README.md**
 
 -----------------------------------------------------------------------------------------
 ###Method 2 B. Install via Helm:
