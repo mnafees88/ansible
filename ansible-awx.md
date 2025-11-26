@@ -159,10 +159,15 @@ Login with:
 ````bash
 git clone https://github.com/ansible/awx-operator.git
 cd awx-operator
+git checkout 2.19.1
 ````
 ## case of facing issue use this method for AWX
 ````bash
 export NAMESPACE=awx
 kubectl create namespace $NAMESPACE
 make deploy
+````
+`if make not installed
+````bash
+sudo apt install -y make
 ````
