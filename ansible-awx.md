@@ -155,6 +155,11 @@ Login with:
 
 ---
 -------------------------
+# ✅ Step-by-Step — Install AWX Operator (Correct Method)
+````bash
+git clone https://github.com/ansible/awx-operator.git
+cd awx-operator
+````
 ## case of facing issue use this method for AWX
 ````bash
 export NAMESPACE=awx
