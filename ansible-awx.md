@@ -227,9 +227,15 @@ Login with:
 
 <img width="1005" height="784" alt="image" src="https://github.com/user-attachments/assets/921d8dc3-a28f-492b-8563-88569d2c945b" />
 
+**create inventory**
+`1. click resources>>inventories>>add inventories>>enter your inventory name`
+
 **Add host**
 
 `1. click on resources >> hosts>> simply name section add IP`
+
+`2.select inventory for which inventory will use host`
+
 <img width="1181" height="416" alt="image" src="https://github.com/user-attachments/assets/38be91cb-5c97-497f-9c60-578ba1ebffe6" />
 
 **then add server credentials**
@@ -244,15 +250,17 @@ Login with:
 **Add project to add playbook via git or manual**
 
 `1. click resources>>projects>>add name>>source control if you have git select git>>repourl>>branchname>>`
+
 <img width="1572" height="535" alt="image" src="https://github.com/user-attachments/assets/f9815014-a587-45a9-84b3-5226e9f4d995" />
 
-**create inventory**
-`1. click resources>>inventories>>add inventories>>
 
 **Create New Job Template**
 
 `1. resources>>templates>>add new job templates>>name your template>>select your project>>once you select your project it will auto update you playbook from git`
+
 <img width="1480" height="606" alt="image" src="https://github.com/user-attachments/assets/30db6744-dc31-436f-8b97-638c3b117772" />
+
+`2. now click on template and lunch template`
 
 -----------------------------------------------------------------------------------------
 ###Method 2 B. Install via Helm:
