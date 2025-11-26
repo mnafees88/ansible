@@ -1,19 +1,39 @@
 ---
-- name: Install Nginx on remote servers
-  hosts: all
-  become: yes
+- name: Install Python on Linux Hosts
+  hosts: all        # or a specific group like 'webservers'
+  become: yes       # use sudo
+  vars:
+    python_packages:
+      - python3
+      - python3-pip
+
   tasks:
-    - name: Update apt cache
-      apt:
+    - name: Update apt cache (Debian/Ubuntu)
+      ansible.builtin.apt:
         update_cache: yes
+      when: ansible_os_family == "Debian"
 
-    - name: Install python
-      apt:
-        name: python
+    - name: Install Python packages (Debian/Ubuntu)
+      ansible.builtin.apt:
+        name: "{{ python_packages }}"
         state: present
+      when: ansible_os_family == "Debian"
 
-    - name: Start and enable python service
-      service:
-        name: python
-        state: started
-        enabled: yes
+    - name: Update yum cache (RHEL/CentOS)
+      ansible.builtin.yum:
+        update_cache: yes
+      when: ansible_os_family == "RedHat"
+
+    - name: Install Python packages (RHEL/CentOS)
+      ansible.builtin.yum:
+        name: "{{ python_packages }}"
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Verify Python3 installation
+      ansible.builtin.command: python3 --version
+      register: python_version
+
+    - name: Print Python version
+      ansible.builtin.debug:
+        msg: "Installed Python version is {{ python_version.stdout }}"
