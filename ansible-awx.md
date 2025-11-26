@@ -167,7 +167,7 @@ export NAMESPACE=awx
 kubectl create namespace $NAMESPACE
 make deploy
 ````
-`if make not installed
+**if make not installed**
 ````bash
 sudo apt install -y make
 ````
