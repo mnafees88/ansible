@@ -234,9 +234,9 @@ Login with:
 
 **then add server credentials**
 
-`2. click on resources >> credentials>>name your server`
+`1. click on resources >> credentials>>name your server`
 
-`3. credentials type >>Machine>> adduser name >>add SSH Private key`
+`2. credentials type >>Machine>> adduser name >>add SSH Private key`
 
 <img width="885" height="712" alt="image" src="https://github.com/user-attachments/assets/a462303b-e33e-4252-a16c-049c04bae943" />
 
@@ -246,6 +246,13 @@ Login with:
 `1. click resources>>projects>>add name>>source control if you have git select git>>repourl>>branchname>>`
 <img width="1572" height="535" alt="image" src="https://github.com/user-attachments/assets/f9815014-a587-45a9-84b3-5226e9f4d995" />
 
+**create inventory**
+`1. click resources>>inventories>>add inventories>>
+
+**Create New Job Template**
+
+`1. resources>>templates>>add new job templates>>name your template>>select your project>>once you select your project it will auto update you playbook from git`
+<img width="1480" height="606" alt="image" src="https://github.com/user-attachments/assets/30db6744-dc31-436f-8b97-638c3b117772" />
 
 -----------------------------------------------------------------------------------------
 ###Method 2 B. Install via Helm:
