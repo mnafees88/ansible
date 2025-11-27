@@ -1,0 +1,28 @@
+---
+- name: Create a new user on Ubuntu servers via AWX
+  hosts: all
+  become: yes           # escalate privilege
+  become_user: root     # explicitly switch to root
+  vars:
+    new_username: "nafees"          # User name input
+    new_password: "Nafees@123"      # Password input
+  tasks:
+    - name: Ensure python3-passlib is installed (for password hashing)
+      apt:
+        name: python3-passlib
+        state: present
+      become: yes
+
+    - name: Create a new user with hashed password
+      user:
+        name: "{{ new_username }}"
+        password: "{{ new_password | password_hash('sha512') }}"
+        shell: /bin/bash
+        state: present
+        create_home: yes
+
+    - name: Add new user to sudo group
+      user:
+        name: "{{ new_username }}"
+        groups: sudo
+        append: yes
