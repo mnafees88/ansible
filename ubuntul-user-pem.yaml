@@ -7,14 +7,17 @@
 
   tasks:
 
-    - name: Create user without password
+    - name: Create user without password (password locked)
       user:
         name: "{{ new_user }}"
-        shell: /bin/bash
+        shell: /bin/bash"
         password: "*"
         create_home: yes
+        groups: sudo
+        append: yes
 
     - name: Generate SSH key pair on controller
+      delegate_to: localhost
       openssh_keypair:
         path: "/tmp/{{ new_user }}_id_rsa"
         type: rsa
@@ -37,6 +40,15 @@
         group: "{{ new_user }}"
         mode: '0600'
 
+    - name: Secure home directory
+      file:
+        path: "/home/{{ new_user }}"
+        owner: "{{ new_user }}"
+        group: "{{ new_user }}"
+        mode: '0750'
+
     - name: Show private key in output
       debug:
-        msg: "PRIVATE KEY:\n{{ keypair.private_key }}"
+        msg: |
+          BELOW IS THE PRIVATE KEY FOR USER {{ new_user }}:
+          {{ keypair.private_key }}
