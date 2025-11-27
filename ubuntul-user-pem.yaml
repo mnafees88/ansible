@@ -7,18 +7,16 @@
 
   tasks:
 
-    - name: Create user without password (password locked)
+    - name: Create user without password
       user:
         name: "{{ new_user }}"
-        shell: /bin/bash"
+        shell: /bin/bash
         password: "*"
         create_home: yes
-        groups: sudo
-        append: yes
 
-    - name: Generate SSH key pair on controller
+    - name: Generate SSH key pair on AWX controller
       delegate_to: localhost
-      openssh_keypair:
+      community.crypto.openssh_keypair:
         path: "/tmp/{{ new_user }}_id_rsa"
         type: rsa
         size: 4096
@@ -40,15 +38,8 @@
         group: "{{ new_user }}"
         mode: '0600'
 
-    - name: Secure home directory
-      file:
-        path: "/home/{{ new_user }}"
-        owner: "{{ new_user }}"
-        group: "{{ new_user }}"
-        mode: '0750'
-
-    - name: Show private key in output
+    - name: Show private key in job output
       debug:
         msg: |
-          BELOW IS THE PRIVATE KEY FOR USER {{ new_user }}:
+          PRIVATE KEY for {{ new_user }}:
           {{ keypair.private_key }}
