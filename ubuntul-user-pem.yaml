@@ -1,7 +1,9 @@
 ---
-- name: Create user & SSH key without password (works on AWX)
+- name: Create user & SSH key as root
   hosts: all
   become: yes
+  become_user: root
+
   vars:
     new_user: "developer"
 
@@ -38,10 +40,10 @@
         src: "/home/{{ new_user }}/.ssh/id_rsa.pub"
       register: public_key
 
-    - name: Show SSH Private key
+    - name: Show PRIVATE KEY
       debug:
         msg: "{{ private_key.content | b64decode }}"
 
-    - name: Show SSH Public key
+    - name: Show PUBLIC KEY
       debug:
         msg: "{{ public_key.content | b64decode }}"
