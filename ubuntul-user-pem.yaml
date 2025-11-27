@@ -5,7 +5,7 @@
   become_user: root
 
   vars:
-    new_user: deployuser    # change to desired username
+    new_user: desdployuser    # change to desired username
 
   tasks:
 
