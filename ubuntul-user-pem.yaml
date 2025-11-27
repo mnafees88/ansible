@@ -1,61 +1,17 @@
 ---
-- name: AWX Playbook — Create user + SSH key
+- name: Create user on Ubuntu 22+ without password
   hosts: all
-  become: yes
+  become: yes               # escalate to root
   become_user: root
 
   vars:
-    new_user: deployuser
-    ssh_private_path: "/home/{{ new_user }}/.ssh/id_rsa"
-    ssh_public_path: "/home/{{ new_user }}/.ssh/id_rsa.pub"
+    new_user: deployuser    # change to desired username
 
   tasks:
 
-    - name: Ensure the user exists (no password)
+    - name: Create new user without password
       user:
         name: "{{ new_user }}"
         shell: /bin/bash
         create_home: yes
-        password_lock: yes
-
-    - name: Create .ssh directory
-      file:
-        path: "/home/{{ new_user }}/.ssh"
-        state: directory
-        owner: "{{ new_user }}"
-        group: "{{ new_user }}"
-        mode: "0700"
-
-    - name: Generate SSH keypair as root
-      command: ssh-keygen -t rsa -b 4096 -f {{ ssh_private_path }} -N ""
-      args:
-        creates: "{{ ssh_private_path }}"
-
-    - name: Set ownership and permissions for .ssh and keys
-      file:
-        path: "{{ item.path }}"
-        owner: "{{ new_user }}"
-        group: "{{ new_user }}"
-        mode: "{{ item.mode }}"
-      loop:
-        - { path: "/home/{{ new_user }}/.ssh", mode: "0700" }
-        - { path: "{{ ssh_private_path }}", mode: "0600" }
-        - { path: "{{ ssh_public_path }}", mode: "0644" }
-
-    - name: Read private key
-      slurp:
-        src: "{{ ssh_private_path }}"
-      register: private_key_raw
-
-    - name: Read public key
-      slurp:
-        src: "{{ ssh_public_path }}"
-      register: public_key_raw
-
-    - name: Show private key (decoded) — WARNING: sensitive
-      debug:
-        msg: "{{ private_key_raw.content | b64decode }}"
-
-    - name: Show public key (decoded)
-      debug:
-        msg: "{{ public_key_raw.content | b64decode }}"
+        password_lock: yes   # disables password login
