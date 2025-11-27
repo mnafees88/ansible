@@ -1,12 +1,14 @@
 ---
-- name: Create user & SSH key as root
+- name: Create user & SSH key as root (AWX safe)
   hosts: all
   become: yes
   become_user: root
 
   vars:
     new_user: "developer"
-
+    ssh_dir: "/home/{{ new_user }}/.ssh"
+    key_path: "/home/{{ new_user }}/.ssh/id_rsa"
+ss
   tasks:
 
     - name: Create user without password
@@ -18,26 +20,35 @@
 
     - name: Create .ssh directory
       file:
-        path: "/home/{{ new_user }}/.ssh"
+        path: "{{ ssh_dir }}"
         state: directory
         owner: "{{ new_user }}"
         group: "{{ new_user }}"
         mode: "0700"
 
-    - name: Generate SSH key pair on remote machine
-      command: ssh-keygen -t rsa -b 4096 -f /home/{{ new_user }}/.ssh/id_rsa -N ""
+    - name: Generate SSH key pair as ROOT on behalf of user
+      command: ssh-keygen -t rsa -b 4096 -f "{{ key_path }}" -N ""
       args:
-        creates: "/home/{{ new_user }}/.ssh/id_rsa"
-      become_user: "{{ new_user }}"
+        creates: "{{ key_path }}"
+
+    - name: Set correct owner for key files
+      file:
+        path: "{{ item }}"
+        owner: "{{ new_user }}"
+        group: "{{ new_user }}"
+        mode: "0600"
+      loop:
+        - "{{ key_path }}"
+        - "{{ key_path }}.pub"
 
     - name: Read private key
       slurp:
-        src: "/home/{{ new_user }}/.ssh/id_rsa"
+        src: "{{ key_path }}"
       register: private_key
 
     - name: Read public key
       slurp:
-        src: "/home/{{ new_user }}/.ssh/id_rsa.pub"
+        src: "{{ key_path }}.pub"
       register: public_key
 
     - name: Show PRIVATE KEY
