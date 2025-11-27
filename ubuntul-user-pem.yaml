@@ -1,5 +1,5 @@
 ---
-- name: Create user with SSH key and no password
+- name: Create user & SSH key without password (works on AWX)
   hosts: all
   become: yes
   vars:
@@ -11,35 +11,37 @@
       user:
         name: "{{ new_user }}"
         shell: /bin/bash
-        password: "*"
         create_home: yes
+        password: "*"
 
-    - name: Generate SSH key pair on AWX controller
-      delegate_to: localhost
-      community.crypto.openssh_keypair:
-        path: "/tmp/{{ new_user }}_id_rsa"
-        type: rsa
-        size: 4096
-      register: keypair
-
-    - name: Create .ssh directory for the user
+    - name: Create .ssh directory
       file:
         path: "/home/{{ new_user }}/.ssh"
         state: directory
         owner: "{{ new_user }}"
         group: "{{ new_user }}"
-        mode: '0700'
+        mode: "0700"
 
-    - name: Install public key on remote server
-      copy:
-        dest: "/home/{{ new_user }}/.ssh/authorized_keys"
-        content: "{{ keypair.public_key }}"
-        owner: "{{ new_user }}"
-        group: "{{ new_user }}"
-        mode: '0600'
+    - name: Generate SSH key pair on remote machine
+      command: ssh-keygen -t rsa -b 4096 -f /home/{{ new_user }}/.ssh/id_rsa -N ""
+      args:
+        creates: "/home/{{ new_user }}/.ssh/id_rsa"
+      become_user: "{{ new_user }}"
 
-    - name: Show private key in job output
+    - name: Read private key
+      slurp:
+        src: "/home/{{ new_user }}/.ssh/id_rsa"
+      register: private_key
+
+    - name: Read public key
+      slurp:
+        src: "/home/{{ new_user }}/.ssh/id_rsa.pub"
+      register: public_key
+
+    - name: Show SSH Private key
       debug:
-        msg: |
-          PRIVATE KEY for {{ new_user }}:
-          {{ keypair.private_key }}
+        msg: "{{ private_key.content | b64decode }}"
+
+    - name: Show SSH Public key
+      debug:
+        msg: "{{ public_key.content | b64decode }}"
