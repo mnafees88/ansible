@@ -1,13 +1,12 @@
 ---
-- name: Check installed packages on servers
+- name: List installed packages on Ubuntu/Debian servers
   hosts: all
   gather_facts: no
-
   tasks:
-    - name: Gather package facts
-      package_facts:
-        manager: auto
+    - name: Get list of installed packages
+      command: dpkg -l
+      register: installed_packages
 
     - name: Show installed packages
       debug:
-        var: ansible_facts.packages
+        var: installed_packages.stdout_lines
