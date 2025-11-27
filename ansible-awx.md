@@ -52,11 +52,21 @@ sudo chown $(id -u):$(id -g) ~/.kube/config
 
 ## 5) Install AWX Operator
 
-### A. Namespace create:
+# Clone AWX Operator reop
 
-```bash
-kubectl create namespace awx
-```
+````bash
+git clone https://github.com/ansible/awx-operator.git
+cd awx-operator
+git checkout 2.19.1
+````
+# Install AWX Operator Manifests
+
+````bash
+export NAMESPACE=awx
+kubectl create namespace $NAMESPACE
+sudo apt install -y make
+make deploy
+````
 
 ### C. Verify:
 
