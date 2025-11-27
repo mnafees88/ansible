@@ -1,60 +1,43 @@
 ---
-- name: Create user & SSH key as root (AWX safe)
+- name: Create Ubuntu user and generate SSH key
   hosts: all
   become: yes
   become_user: root
 
-  vars:
-    new_user: "developer"
-    ssh_dir: "/home/{{ new_user }}/.ssh"
-    key_path: "/home/{{ new_user }}/.ssh/id_rsa"
-ss
   tasks:
-
-    - name: Create user without password
-      user:
-        name: "{{ new_user }}"
+    - name: Ensure developer user exists
+    - user:
+        name: developer
         shell: /bin/bash
+        state: present
         create_home: yes
-        password: "*"
 
     - name: Create .ssh directory
       file:
-        path: "{{ ssh_dir }}"
+        path: /home/developer/.ssh
         state: directory
-        owner: "{{ new_user }}"
-        group: "{{ new_user }}"
-        mode: "0700"
+        owner: developer
+        group: developer
+        mode: '0700'
 
-    - name: Generate SSH key pair as ROOT on behalf of user
-      command: ssh-keygen -t rsa -b 4096 -f "{{ key_path }}" -N ""
-      args:
-        creates: "{{ key_path }}"
+    - name: Generate SSH keypair for developer
+      openssh_keypair:
+        path: /home/developer/.ssh/id_rsa
+        owner: developer
+        group: developer
+        mode: '0600'
+        type: rsa
+        size: 2048
+      register: keypair
 
-    - name: Set correct owner for key files
-      file:
-        path: "{{ item }}"
-        owner: "{{ new_user }}"
-        group: "{{ new_user }}"
-        mode: "0600"
-      loop:
-        - "{{ key_path }}"
-        - "{{ key_path }}.pub"
+    - name: Add public key to authorized_keys
+      copy:
+        dest: /home/developer/.ssh/authorized_keys
+        content: "{{ keypair.public_key }}"
+        owner: developer
+        group: developer
+        mode: '0600'
 
-    - name: Read private key
-      slurp:
-        src: "{{ key_path }}"
-      register: private_key
-
-    - name: Read public key
-      slurp:
-        src: "{{ key_path }}.pub"
-      register: public_key
-
-    - name: Show PRIVATE KEY
+    - name: Display private key (PEM)
       debug:
-        msg: "{{ private_key.content | b64decode }}"
-
-    - name: Show PUBLIC KEY
-      debug:
-        msg: "{{ public_key.content | b64decode }}"
+        msg: "{{ keypair.private_key }}"
