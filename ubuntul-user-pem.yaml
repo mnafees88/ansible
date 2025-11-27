@@ -1,11 +1,13 @@
 ---
-- name: Create user on Ubuntu 22+ without password
+- name: Create user + generate SSH key + show PEM
   hosts: all
-  become: yes               # escalate to root
+  become: yes
   become_user: root
 
   vars:
-    new_user: desdployuser    # change to desired username
+    new_user: deployuser
+    ssh_private_path: "/home/{{ new_user }}/.ssh/id_rsa"
+    ssh_public_path: "/home/{{ new_user }}/.ssh/id_rsa.pub"
 
   tasks:
 
@@ -14,4 +16,46 @@
         name: "{{ new_user }}"
         shell: /bin/bash
         create_home: yes
-        password_lock: yes   # disables password login
+        password_lock: yes
+
+    - name: Create .ssh directory
+      file:
+        path: "/home/{{ new_user }}/.ssh"
+        state: directory
+        owner: "{{ new_user }}"
+        group: "{{ new_user }}"
+        mode: "0700"
+
+    - name: Generate SSH keypair (run as root)
+      command: ssh-keygen -t rsa -b 4096 -f {{ ssh_private_path }} -N ""
+      args:
+        creates: "{{ ssh_private_path }}"
+
+    - name: Fix key permissions
+      file:
+        path: "{{ item.path }}"
+        owner: "{{ new_user }}"
+        group: "{{ new_user }}"
+        mode: "{{ item.mode }}"
+      loop:
+        - { path: "{{ ssh_private_path }}", mode: "0600" }
+        - { path: "{{ ssh_public_path }}", mode: "0644" }
+        - { path: "/home/{{ new_user }}/.ssh", mode: "0700" }
+
+    - name: Read private key
+      slurp:
+        src: "{{ ssh_private_path }}"
+      register: private_key_raw
+
+    - name: Read public key
+      slurp:
+        src: "{{ ssh_public_path }}"
+      register: public_key_raw
+
+    - name: Show Private Key (PEM)
+      debug:
+        msg: "{{ private_key_raw.content | b64decode }}"
+
+    - name: Show Public Key
+      debug:
+        msg: "{{ public_key_raw.content | b64decode }}"
