@@ -1,0 +1,42 @@
+---
+- name: Create user with SSH key and no password
+  hosts: all
+  become: yes
+  vars:
+    new_user: "developer"
+
+  tasks:
+
+    - name: Create user without password
+      user:
+        name: "{{ new_user }}"
+        shell: /bin/bash
+        password: "*"
+        create_home: yes
+
+    - name: Generate SSH key pair on controller
+      openssh_keypair:
+        path: "/tmp/{{ new_user }}_id_rsa"
+        type: rsa
+        size: 4096
+      register: keypair
+
+    - name: Create .ssh directory for the user
+      file:
+        path: "/home/{{ new_user }}/.ssh"
+        state: directory
+        owner: "{{ new_user }}"
+        group: "{{ new_user }}"
+        mode: '0700'
+
+    - name: Install public key on remote server
+      copy:
+        dest: "/home/{{ new_user }}/.ssh/authorized_keys"
+        content: "{{ keypair.public_key }}"
+        owner: "{{ new_user }}"
+        group: "{{ new_user }}"
+        mode: '0600'
+
+    - name: Show private key in output
+      debug:
+        msg: "PRIVATE KEY:\n{{ keypair.private_key }}"
