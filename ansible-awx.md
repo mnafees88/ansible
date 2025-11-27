@@ -177,10 +177,10 @@ Login with:
 `2. now click on template and lunch template`
 
 -----------------------------------------------------------------------------------------
-###Method 2 B. Install via Helm:
+### Method 2 B. Install via Helm:
 
 
-## 4) Install Helm
+**Install Helm**
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
