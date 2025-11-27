@@ -1,93 +1,63 @@
 ---
-- name: AWX playbook — create user, generate .pem (SSH key) and show it
+- name: Create user and generate SSH keypair
   hosts: all
-  gather_facts: yes
-  remote_user: ubuntu            # AWX credentials you provided (connects as ubuntu)
-  become: yes                    # escalate to root (sudo)
-  become_method: sudo
+  remote_user: ubuntu
+  become: yes
   become_user: root
 
   vars:
-    new_user: deployuser         # change this to desired username
-    user_shell: /bin/bash
-    ssh_key_type: rsa
-    ssh_key_bits: 4096
+    new_user: deployuser
     ssh_private_path: "/home/{{ new_user }}/.ssh/id_rsa"
-    ssh_public_path: "{{ ssh_private_path }}.pub"
+    ssh_public_path: "/home/{{ new_user }}/.ssh/id_rsa.pub"
 
   tasks:
-    - name: Ensure user exists and has no password (locked)
-      ansible.builtin.user:
-        name: "{{ new_user }}"
-        state: present
-        create_home: yes
-        shell: "{{ user_shell }}"
-        password_lock: yes       # lock password so no password login
-        groups: sudo             # optional: add to sudo group (remove if not wanted)
-        append: yes
 
-    - name: Ensure .ssh directory exists with correct ownership/perms
-      ansible.builtin.file:
+    - name: Create new user without password
+      user:
+        name: "{{ new_user }}"
+        shell: /bin/bash
+        create_home: yes
+        password_lock: yes
+
+    - name: Create .ssh directory
+      file:
         path: "/home/{{ new_user }}/.ssh"
         state: directory
         owner: "{{ new_user }}"
         group: "{{ new_user }}"
         mode: "0700"
 
-    - name: Generate SSH keypair for the new user (if missing)
-      ansible.builtin.command: >
-        ssh-keygen -t {{ ssh_key_type }} -b {{ ssh_key_bits }}
-                  -f {{ ssh_private_path }} -N "" -C "{{ new_user }}@{{ inventory_hostname }}"
+    - name: Generate SSH keypair
+      command: >
+        ssh-keygen -t rsa -b 4096 -f {{ ssh_private_path }} -N ""
       args:
         creates: "{{ ssh_private_path }}"
-      become: yes
       become_user: "{{ new_user }}"
-      register: sshgen_result
-      changed_when: sshgen_result.rc == 0 and 'already exists' not in (sshgen_result.stderr|default(''))
 
-    - name: Ensure private key ownership and perms
-      ansible.builtin.file:
-        path: "{{ ssh_private_path }}"
+    - name: Fix key permissions
+      file:
+        path: "{{ item.path }}"
         owner: "{{ new_user }}"
         group: "{{ new_user }}"
-        mode: "0600"
-      when: ansible_facts['os_family'] is defined  # safe guard; will run if key exists
+        mode: "{{ item.mode }}"
+      loop:
+        - { path: "{{ ssh_private_path }}", mode: "0600" }
+        - { path: "{{ ssh_public_path }}", mode: "0644" }
 
-    - name: Ensure public key ownership and perms
-      ansible.builtin.file:
-        path: "{{ ssh_public_path }}"
-        owner: "{{ new_user }}"
-        group: "{{ new_user }}"
-        mode: "0644"
-      when: ansible_facts['os_family'] is defined
-
-    - name: Slurp (read) private key (base64)
-      ansible.builtin.slurp:
+    - name: Read private key
+      slurp:
         src: "{{ ssh_private_path }}"
-      register: slurped_private
-      failed_when: slurped_private is failed
+      register: private_key_raw
 
-    - name: Slurp (read) public key (base64)
-      ansible.builtin.slurp:
+    - name: Read public key
+      slurp:
         src: "{{ ssh_public_path }}"
-      register: slurped_public
-      failed_when: slurped_public is failed
+      register: public_key_raw
 
-    - name: Show generated private key (decoded) -- WARNING: sensitive
-      ansible.builtin.debug:
-        msg: |
-          -----BEGIN PRIVATE KEY----- (private key for user {{ new_user }}) -----
-          {{ slurped_private.content | b64decode }}
-          ------------------------------------------------------------------------
-      # If you prefer to hide it from regular output but still have it in AWX job artifacts,
-      # remove this debug and instead register slurped_private for later retrieval.
+    - name: Show Private Key
+      debug:
+        msg: "{{ private_key_raw.content | b64decode }}"
 
-    - name: Show generated public key (decoded)
-      ansible.builtin.debug:
-        msg: "{{ slurped_public.content | b64decode }}"
-
-    - name: Add public key to authorized_keys for the user (ensures login by key)
-      ansible.builtin.authorized_key:
-        user: "{{ new_user }}"
-        state: present
-        key: "{{ slurped_public.content | b64decode }}"
+    - name: Show Public Key
+      debug:
+        msg: "{{ public_key_raw.content | b64decode }}"
