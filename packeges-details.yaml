@@ -1,25 +1,12 @@
-- name: Check if common software is installed
+---
+- name: Show manually installed packages on Ubuntu/Debian
   hosts: all
   gather_facts: no
   tasks:
-    - name: Check for Python
-      command: which python3
-      register: python_check
-      ignore_errors: yes
+    - name: Get manually installed packages
+      command: apt-mark showmanual
+      register: manual_packages
 
-    - name: Check for Docker
-      command: which docker
-      register: docker_check
-      ignore_errors: yes
-
-    - name: Check for Kubernetes kubectl
-      command: which kubectl
-      register: kubectl_check
-      ignore_errors: yes
-
-    - name: Show installed software
+    - name: Display manually installed packages
       debug:
-        msg:
-          - "Python: {{ python_check.stdout if python_check.rc == 0 else 'Not Installed' }}"
-          - "Docker: {{ docker_check.stdout if docker_check.rc == 0 else 'Not Installed' }}"
-          - "kubectl: {{ kubectl_check.stdout if kubectl_check.rc == 0 else 'Not Installed' }}"
+        var: manual_packages.stdout_lines
