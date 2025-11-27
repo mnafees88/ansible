@@ -1,12 +1,25 @@
----
-- name: List installed packages on Ubuntu/Debian servers
+- name: Check if common software is installed
   hosts: all
   gather_facts: no
   tasks:
-    - name: Get list of installed packages
-      command: dpkg -l
-      register: installed_packages
+    - name: Check for Python
+      command: which python3
+      register: python_check
+      ignore_errors: yes
 
-    - name: Show installed packages
+    - name: Check for Docker
+      command: which docker
+      register: docker_check
+      ignore_errors: yes
+
+    - name: Check for Kubernetes kubectl
+      command: which kubectl
+      register: kubectl_check
+      ignore_errors: yes
+
+    - name: Show installed software
       debug:
-        var: installed_packages.stdout_lines
+        msg:
+          - "Python: {{ python_check.stdout if python_check.rc == 0 else 'Not Installed' }}"
+          - "Docker: {{ docker_check.stdout if docker_check.rc == 0 else 'Not Installed' }}"
+          - "kubectl: {{ kubectl_check.stdout if kubectl_check.rc == 0 else 'Not Installed' }}"
