@@ -5,7 +5,7 @@
   become_user: root
 
   vars:
-    new_user: developer   # <--- Sirf yahan user change karna hai!
+    new_user: nafdeveloper   # <--- Sirf yahan user change karna hai!
 
   tasks:
     - name: Ensure user exists
