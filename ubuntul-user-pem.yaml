@@ -5,7 +5,7 @@
   become_user: root
 
   vars:
-    new_user: dsdfeployuser
+    new_user: dnafeployuser
     ssh_private_path: "/home/{{ new_user }}/.ssh/id_rsa"
     ssh_public_path: "/home/{{ new_user }}/.ssh/id_rsa.pub"
 
