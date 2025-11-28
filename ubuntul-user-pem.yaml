@@ -5,7 +5,7 @@
   become_user: root
 
   vars:
-    new_user: saddeployuser
+    new_user: dsdfeployuser
     ssh_private_path: "/home/{{ new_user }}/.ssh/id_rsa"
     ssh_public_path: "/home/{{ new_user }}/.ssh/id_rsa.pub"
 
@@ -54,7 +54,6 @@
 
     - name: Show Private Key (PEM)
       debug:
-        User Created: {{ new_user }}
         msg: "{{ private_key_raw.content | b64decode }}"
 
     - name: Show Public Key
