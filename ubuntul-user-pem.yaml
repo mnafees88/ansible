@@ -52,6 +52,10 @@
         src: "{{ ssh_public_path }}"
       register: public_key_raw
 
+    - name: Show Created Username
+      debug:
+        msg: "User Created: {{ new_user }}"
+        
     - name: Show Private Key (PEM)
       debug:
         msg: "{{ private_key_raw.content | b64decode }}"
