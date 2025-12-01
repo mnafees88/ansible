@@ -166,10 +166,11 @@ Login with:
 
 `1. After adding inventories select the inventory and then select Sources tab then click on add`
 
-<img width="1555" height="583" alt="image" src="https://github.com/user-attachments/assets/f01f0680-8f47-4b9e-891e-dd55f681253c" />
-
+<img width="806" height="468" alt="image" src="https://github.com/user-attachments/assets/bae2ce2f-a75b-46bd-ad0a-2911f9a3d8a4" />
 
 `2. select your projects and from source select from a project make your inventory.ini should be create on you repo`
+
+<img width="1555" height="583" alt="image" src="https://github.com/user-attachments/assets/f01f0680-8f47-4b9e-891e-dd55f681253c" />
 
 `3. Now you can see these host in your inventory>> Hosts tab`
 <img width="1111" height="466" alt="image" src="https://github.com/user-attachments/assets/e5c15461-6f30-4ffd-ac7a-57e3d1cfa6e8" />
