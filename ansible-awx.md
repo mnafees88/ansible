@@ -171,8 +171,10 @@ Login with:
 `2. select your p**rojects** and from source select **from a project** make your **inventory.ini** should be create on you repo`
 
 `3. Now you can see these host in your **inventory**>> **Hosts** tab`
-![Uploading image.png…]()
+<img width="387" height="265" alt="image" src="https://github.com/user-attachments/assets/6277441d-9e1c-4819-9537-0b4bbdf8c915" />
 
+`4. Inventory file multiple hosts adding`
+![Uploading image.png…]()
 
 **then add server credentials**
 
