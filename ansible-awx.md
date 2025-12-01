@@ -162,6 +162,18 @@ Login with:
 
 <img width="1181" height="416" alt="image" src="https://github.com/user-attachments/assets/38be91cb-5c97-497f-9c60-578ba1ebffe6" />
 
+**how to add multiplehost with inventory.ini**
+
+`1. After adding **inventories** select the inventory and then select **Sources** tab then click on add`
+
+<img width="876" height="409" alt="image" src="https://github.com/user-attachments/assets/fc1a1b43-ff4d-4cdc-af41-85807b10c925" />
+
+`2. select your p**rojects** and from source select **from a project** make your **inventory.ini** should be create on you repo`
+
+`3. Now you can see these host in your **inventory**>> **Hosts** tab`
+![Uploading image.png…]()
+
+
 **then add server credentials**
 
 `1. click on resources >> credentials>>name your server`
