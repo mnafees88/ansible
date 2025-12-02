@@ -204,7 +204,7 @@ kubectl create secret generic ssh-keys --from-file=ubuntu.pem=/home/ubuntu.pem -
 
 ````bash
 kubectl create secret generic ssh-keys  --from-file=ubuntu1.pem=/home/user/ubuntu1.pem --from-file=ubuntu2.pem=/home/user/ubuntu2.pem -n awx
-1111
+
 <img width="868" height="130" alt="image" src="https://github.com/user-attachments/assets/631c1676-8a75-4b5a-a04f-f852ef1300ac" />
 
 `2. verify that secret configured`
@@ -212,6 +212,7 @@ kubectl create secret generic ssh-keys  --from-file=ubuntu1.pem=/home/user/ubunt
 ````bash
 kubectl get secret -n awx
 ````
+
 <img width="531" height="181" alt="image" src="https://github.com/user-attachments/assets/31f58652-4bde-4e45-8af7-0f9d2d158ebc" />
 
 **Now mount volume by updating your deployement**
