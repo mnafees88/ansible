@@ -189,7 +189,7 @@ Login with:
 
 `2. credentials type >>Machine>> adduser name >>add SSH Private key`
 
-<img width="885" height="712" alt="image" src="https://github.com/user-attachments/assets/a462303b-e33e-4252-a16c-049c04bae943" />
+<img width="1281" height="640" alt="image" src="https://github.com/user-attachments/assets/460e8180-e95b-48a6-889a-a0a6de68325f" />
 
 
 **Create Separate Credentials for Each Host**
@@ -203,8 +203,6 @@ Login with:
 server1 ansible_host=10.0.0.1 ansible_user=ubuntu ansible_ssh_private_key_file=/var/lib/awx/projects/project/keys/master.pem
 server2 ansible_host=10.0.0.2 ansible_user=ubuntu ansible_ssh_private_key_file=/var/lib/awx/projects/project/keys/node1.pem
 ````
-
-<img width="1281" height="640" alt="image" src="https://github.com/user-attachments/assets/460e8180-e95b-48a6-889a-a0a6de68325f" />
 
 
 **Add project to add playbook via git or manual**
