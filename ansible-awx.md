@@ -191,9 +191,11 @@ Login with:
 
 <img width="885" height="712" alt="image" src="https://github.com/user-attachments/assets/a462303b-e33e-4252-a16c-049c04bae943" />
 
+
 **Create Separate Credentials for Each Host**
 
 `1. Create a folder in same repo with keys and add all .pems in that folder`
+
 `2. Now your inventory file should b like this`
 
 ````bash
@@ -204,10 +206,6 @@ server2 ansible_host=10.0.0.2 ansible_user=ubuntu ansible_ssh_private_key_file=/
 
 <img width="1281" height="640" alt="image" src="https://github.com/user-attachments/assets/460e8180-e95b-48a6-889a-a0a6de68325f" />
 
-**Assugb creds to host**
-
-`1. Inventory → Hosts → Host select karo → Edit → ariables section me yeh add karo
-`2. ansible_ssh_private_key_file: /runner/.ssh/master1`
 
 **Add project to add playbook via git or manual**
 
