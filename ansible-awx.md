@@ -162,6 +162,7 @@ Login with:
 
 <img width="1181" height="416" alt="image" src="https://github.com/user-attachments/assets/38be91cb-5c97-497f-9c60-578ba1ebffe6" />
 
+
 **how to add multiplehost with inventory.ini**
 
 `1. After adding inventories select the inventory and then select Sources tab then click on add`
@@ -191,10 +192,11 @@ Login with:
 <img width="885" height="712" alt="image" src="https://github.com/user-attachments/assets/a462303b-e33e-4252-a16c-049c04bae943" />
 
 **Create Separate Credentials for Each Host**
+
 `1. Create a folder in same repo with keys and add all .pems in that folder`
 `2. Now your inventory file should b like this`
 
-````bash````
+````bash
 [web]
 server1 ansible_host=10.0.0.1 ansible_user=ubuntu ansible_ssh_private_key_file=/var/lib/awx/projects/project/keys/master.pem
 server2 ansible_host=10.0.0.2 ansible_user=ubuntu ansible_ssh_private_key_file=/var/lib/awx/projects/project/keys/node1.pem
