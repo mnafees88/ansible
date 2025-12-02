@@ -194,16 +194,58 @@ Login with:
 
 **Create Separate Credentials for Each Host**
 
-`1. Create a folder in same repo with keys and add all .pems in that folder`
-
-`2. Now your inventory file should b like this`
+`1. Create .pem file inside your ansible server and configure secret for awx`
 
 ````bash
-[web]
-server1 ansible_host=10.0.0.1 ansible_user=ubuntu ansible_ssh_private_key_file=/var/lib/awx/projects/project/keys/master.pem
-server2 ansible_host=10.0.0.2 ansible_user=ubuntu ansible_ssh_private_key_file=/var/lib/awx/projects/project/keys/node1.pem
+kubectl create secret generic ssh-keys --from-file=ubuntu.pem=/home/ubuntu.pem -n awx
 ````
 
+`2. for more then 1 pem we can use command like this `
+
+````bash
+kubectl create secret generic ssh-keys  --from-file=ubuntu1.pem=/home/user/ubuntu1.pem --from-file=ubuntu2.pem=/home/user/ubuntu2.pem -n awx
+1111
+<img width="868" height="130" alt="image" src="https://github.com/user-attachments/assets/631c1676-8a75-4b5a-a04f-f852ef1300ac" />
+
+`2. verify that secret configured`
+
+````bash
+kubectl get secret -n awx
+````
+<img width="531" height="181" alt="image" src="https://github.com/user-attachments/assets/31f58652-4bde-4e45-8af7-0f9d2d158ebc" />
+
+**Now mount volume by updating your deployement**
+
+````bash
+apiVersion: awx.ansible.com/v1beta1
+kind: AWX
+metadata:
+  name: awx-demo
+  namespace: awx
+spec:
+  service_type: nodeport
+  ingress_type: none
+  hostname: awx.local
+  postgres_configuration_secret: ""
+  admin_user: admin
+
+  # -------------------------------
+  # Ye section SSH key mount ke liye hai
+  extraVolumes:
+    - name: ssh-keys
+      secret:
+        secretName: ssh-keys
+  extraVolumeMounts:
+    - name: ssh-keys
+      mountPath: /opt/ssh-keys
+      readOnly: true
+````
+
+`1. finaly update deployment`
+
+````bash
+kubectl apply -f awx-demo-updated.yaml
+````
 
 **Add project to add playbook via git or manual**
 
