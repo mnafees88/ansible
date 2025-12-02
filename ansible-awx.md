@@ -57,7 +57,7 @@ sudo chown $(id -u):$(id -g) ~/.kube/config
 ````bash
 git clone https://github.com/ansible/awx-operator.git
 cd awx-operator
-git checkout 2.19.1
+git checkout 2.9.0
 ````
 # Install AWX Operator Manifests
 
@@ -147,6 +147,7 @@ Login with:
 
 ---
 **once done you can access via browser**
+
 <img width="903" height="205" alt="image" src="https://github.com/user-attachments/assets/ed25ce22-fb1e-40e2-92fa-1e466fb0b196" />
 
 <img width="1005" height="784" alt="image" src="https://github.com/user-attachments/assets/921d8dc3-a28f-492b-8563-88569d2c945b" />
@@ -200,11 +201,11 @@ Login with:
 kubectl create secret generic ssh-keys --from-file=ubuntu.pem=/home/ubuntu.pem -n awx
 ````
 
-`2. for more then 1 pem we can use command like this `
+`2. for more then 1 pem we can use command like this`
 
 ````bash
 kubectl create secret generic ssh-keys  --from-file=ubuntu1.pem=/home/user/ubuntu1.pem --from-file=ubuntu2.pem=/home/user/ubuntu2.pem -n awx
-
+````
 <img width="868" height="130" alt="image" src="https://github.com/user-attachments/assets/631c1676-8a75-4b5a-a04f-f852ef1300ac" />
 
 `2. verify that secret configured`
