@@ -193,61 +193,13 @@ Login with:
 <img width="1281" height="640" alt="image" src="https://github.com/user-attachments/assets/460e8180-e95b-48a6-889a-a0a6de68325f" />
 
 
-**Create Separate Credentials for Each Host**
+**How to use multiple creds with multiple host**
 
-`1. Create .pem file inside your ansible server and configure secret for awx`
+<img width="729" height="264" alt="image" src="https://github.com/user-attachments/assets/1d927785-18b3-4fdb-b7e9-0bde3240255f" />
 
-````bash
-kubectl create secret generic ssh-keys --from-file=ubuntu.pem=/home/ubuntu.pem -n awx
-````
+`1. add cred in awx then call it in inside the inventory files`
 
-`2. for more then 1 pem we can use command like this`
-
-````bash
-kubectl create secret generic ssh-keys  --from-file=ubuntu1.pem=/home/user/ubuntu1.pem --from-file=ubuntu2.pem=/home/user/ubuntu2.pem -n awx
-````
-<img width="868" height="130" alt="image" src="https://github.com/user-attachments/assets/631c1676-8a75-4b5a-a04f-f852ef1300ac" />
-
-`2. verify that secret configured`
-
-````bash
-kubectl get secret -n awx
-````
-
-<img width="531" height="181" alt="image" src="https://github.com/user-attachments/assets/31f58652-4bde-4e45-8af7-0f9d2d158ebc" />
-
-**Now mount volume by updating your deployement**
-
-````bash
-apiVersion: awx.ansible.com/v1beta1
-kind: AWX
-metadata:
-  name: awx-demo
-  namespace: awx
-spec:
-  service_type: nodeport
-  ingress_type: none
-  hostname: awx.local
-  postgres_configuration_secret: ""
-  admin_user: admin
-
-  # -------------------------------
-  # Ye section SSH key mount ke liye hai
-  extraVolumes:
-    - name: ssh-keys
-      secret:
-        secretName: ssh-keys
-  extraVolumeMounts:
-    - name: ssh-keys
-      mountPath: /opt/ssh-keys
-      readOnly: true
-````
-
-`1. finaly update deployment`
-
-````bash
-kubectl apply -f awx-demo-updated.yaml
-````
+<img width="848" height="479" alt="image" src="https://github.com/user-attachments/assets/034a2670-534c-4664-b179-fc4167935918" />
 
 **Add project to add playbook via git or manual**
 
