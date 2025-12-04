@@ -317,3 +317,12 @@ Login with:
 
 ---
 -------------------------
+**Trouble shoot Commands**
+
+````bash
+1.copy file from host to pod
+kubectl cp awx.yaml awx/awx-demo-web-cb659cd66-rqgm2:/tmp/awx.yaml
+
+2. ssh pod command
+kubectl exec -it awx-demo-web-cb659cd66-rqgm2 -n awx -- bash
+````
