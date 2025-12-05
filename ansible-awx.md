@@ -12,7 +12,7 @@
 
 ---
 
-## 2) Install Ansible
+## 2) Install Ansible CLI --Skip this if you dont need ansible cli
 
 ```bash
 sudo apt update
