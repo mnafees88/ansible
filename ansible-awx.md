@@ -325,4 +325,11 @@ kubectl cp awx.yaml awx/awx-demo-web-cb659cd66-rqgm2:/tmp/awx.yaml
 
 2. ssh pod command
 kubectl exec -it awx-demo-web-cb659cd66-rqgm2 -n awx -- bash
+
+3.Delete a pod from a name space
+kubectl delete pod awx-demo-web-8698c659cc-ntwkz -n awx
+
+4.Delete a pod
+kubectl delete pod awx-demo-web-8698c659cc-ntwkz
+
 ````
