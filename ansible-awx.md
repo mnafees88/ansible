@@ -338,7 +338,7 @@ extra_vars:
   ssh_uername: '{{ username }}'
   ssh_private_key: '{{ ssh_key_data }}'
 ````
-
+**now under the credentials tab new credential type will appear**
 -------------------------
 **Trouble shoot Commands**
 
