@@ -315,7 +315,30 @@ Login with:
 * **Username:** admin
 * **Password:** (retrieved from secret)
 
----
+-------------------------
+# how to add custom creds for multiple use
+
+<img width="657" height="797" alt="image" src="https://github.com/user-attachments/assets/ef9a4711-97ac-47cc-ada1-4e8b408baca3" />
+
+````bash
+1. fields:
+  - id: username
+    type: string
+    label: Username
+  - id: ssh_key_data
+    type: string
+    label: SSH Private Key
+    secret: true
+    multiline: true
+
+2.env:
+  MY_SSH_USER: '{{ username }}'
+  MY_SSH_PRIVATE_KEY: '{{ ssh_key_data }}'
+extra_vars:
+  ssh_uername: '{{ username }}'
+  ssh_private_key: '{{ ssh_key_data }}'
+````
+
 -------------------------
 **Trouble shoot Commands**
 
