@@ -342,6 +342,11 @@ extra_vars:
   ansible_ssh_private_key_file: '{{ tower.filename.ssh_key }}'
 ````
 **now under the credentials tab new credential type will appear**
+
+1. in templates job you can now select multiple creds type to add multiple creds
+2. 
+3. <img width="1077" height="539" alt="image" src="https://github.com/user-attachments/assets/f0c4e61f-0102-4f1d-a3e7-160a1cb68c8a" />
+
 -------------------------
 **Trouble shoot Commands**
 
