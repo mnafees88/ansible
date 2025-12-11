@@ -330,13 +330,16 @@ Login with:
     label: SSH Private Key
     secret: true
     multiline: true
+required:
+  - username
+  - ssh_key_data
 
-2.env:
-  MY_SSH_USER: '{{ username }}'
-  MY_SSH_PRIVATE_KEY: '{{ ssh_key_data }}'
+
+2.file:
+  template.ssh_key: '{{ ssh_key_data }}'
 extra_vars:
-  ssh_uername: '{{ username }}'
-  ssh_private_key: '{{ ssh_key_data }}'
+  ansible_user: '{{ username }}'
+  ansible_ssh_private_key_file: '{{ tower.filename.ssh_key }}'
 ````
 **now under the credentials tab new credential type will appear**
 -------------------------
